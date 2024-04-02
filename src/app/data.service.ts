@@ -9,11 +9,25 @@ import { Observable } from 'rxjs';
 export class DataService {
   constructor(private http: HttpClient) { }
 
-  getData(): Observable<any> {
-    return this.http.get<any>('http://api.weatherapi.com/v1/current.json?q=London&key=d40df45c2fc94d38b58232014243003');
+  getCities(): Observable<any> {
+    return this.http.get<any>('https://silvacom-backend-application.nn.r.appspot.com/cities');
   }
 
-  getCities(): Observable<any> {
-    return this.http.get<any>('/api/cities');
+  getCity(city: string): Observable<any> {
+    // Adjust the URL to include the selected city
+    const url = `https://silvacom-backend-application.nn.r.appspot.com/city?id=${city}`;
+    return this.http.get<any>(url);
+  }
+
+  getWeatherByCity(city: string): Observable<any> {
+    // Adjust the URL to include the selected city
+    const url = `https://silvacom-backend-application.nn.r.appspot.com/city/weather?id=${city}`;
+    return this.http.get<any>(url);
+  }
+
+  getWeatherForecastByCityAndDays(city: string, days: number){
+    const url = `https://silvacom-backend-application.nn.r.appspot.com/city/forecast?id=${city}&days=${days}`;
+    console.log(url);
+    return this.http.get<any>(url);
   }
 }

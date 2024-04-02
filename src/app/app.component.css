@@ -1,5 +1,88 @@
 .disabled-date {
-    background-color: #f0f0f0 !important; /* Change to your desired disabled date color */
-    color: #ccc !important; /* Change to your desired text color for disabled dates */
+  background-color: #f0f0f0 !important; /* Change to your desired disabled date color */
+  color: #ccc !important; /* Change to your desired text color for disabled dates */
+}
+
+.content {
+display: flex;
+background-image: url('../assets/img/travel-background.jpg');
+background-size: cover;
+background-position: center;
+}
+
+.left {
+flex:1;
+}
+
+.right {
+font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+flex: 1;
+padding-left: 20px;
+}
+
+mat-card-content {
+  text-align: center;
+  color:#E27C24;
+}
+
+mat-card {
+  margin: 10px;
+  padding: 20px; 
+  border-radius: 10px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+
+.date-field {
+  flex-grow: 1;
+  margin-right: 20px;
+}
+
+.city-name {
+  flex: 1;
+}
+
+.city-date {
+  margin: 25px;
+}
+
+.right h1 {
+  text-align: center;
+}
+
+.city-pic {
+  margin-top: 10px;
+}
+
+.city-pic img {
+  height: 300px;
+  width: 500px;
+  border-radius: 10px;
+  display: block; /* Ensures the image behaves as a block-level element */
+  margin: 0 auto; /* Automatically centers the image horizontally */
+}
+
+.data-api {
+  /* background-color: rgba(226, 124, 36, 0.5); /* 50% opacity 
+  border-radius: 10px; */
+  padding-left: 10px;
+  margin-top: 10px;
+}
+
+.weather-data h3,
+  .weather-data p {
+    display: inline-block;
   }
   
+.weather-data h3 {
+  background-color: #E27C24;
+  padding: 5px;
+  border-radius: 5px;
+  margin: 5px;
+  color: white;
+}
+
+h3 {
+  text-align: center;
+  color: #E27C24;
+}

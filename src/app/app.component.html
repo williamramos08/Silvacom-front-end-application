@@ -1,19 +1,22 @@
 <main class="main">
   <div class="content">
+    <div class="left">
     <mat-card>
-      <mat-card-content>Trip Planner</mat-card-content>
+      <mat-card-content><h1>Trip Planner</h1></mat-card-content>
 
-      <form [formGroup]="range">
+      <form [formGroup]="range" class="city-date">
         <h4>Choose a city</h4>
-        <mat-form-field>
+        <mat-form-field class="city-name">
           <mat-select formControlName="city">
             <mat-option *ngFor="let city of cities" [value]="city.value">{{city.viewValue}}</mat-option>
           </mat-select>
         </mat-form-field>
+        
 
         <div *ngIf="range.get('city')?.value">
           <h4>Enter a Date Range</h4>
-          <mat-form-field>
+          <mat-form-field class="date-field">
+            <mat-label>Start Date</mat-label>
             <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="start" [readonly]="true" [disabled]="true">
             <mat-datepicker-toggle matSuffix [for]="picker" [disabled]="true"></mat-datepicker-toggle>
             <mat-datepicker #picker [startAt]="todayDate"></mat-datepicker>
@@ -22,7 +25,7 @@
           
           <mat-form-field>
             <mat-label>End Date</mat-label>
-            <input matInput [matDatepicker]="endPicker" formControlName="end" [min]="todayDate">
+            <input matInput [matDatepicker]="endPicker" formControlName="end" [min]="todayDate" [max]="maxDate">
             <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
             <mat-datepicker #endPicker></mat-datepicker>
           </mat-form-field>          
@@ -33,17 +36,67 @@
           <div *ngIf="range.get('end')?.invalid && range.get('end')?.touched">
             <mat-error>Invalid end date</mat-error>
           </div>          
-          
-          <p>Selected range: {{range.value | json}}</p>
+        </div>
+
+        <div *ngIf="weatherData && !forecastData" >
+          <div class="weather-data">
+            <p>Date: </p>
+            <h3>{{formattedTodayDate}}</h3>
+
+            <p>Weather: </p>
+            <h3>{{weatherData.weatherDescription}}</h3>
+
+            <p>Temperature: </p>
+            <h3>{{weatherData.temperature}}</h3>
+
+            <p>Windspeed: </p>
+            <h3>{{weatherData.windSpeed}}</h3>
+          </div>
+        </div>
+        <div *ngIf="forecastData" >
+          <div class="weather-data" *ngFor="let forecast of forecastData">
+            <p>Date: </p>
+            <h3>{{forecast.date}}</h3>
+
+            <p>Weather: </p>
+            <h3>{{forecast.weatherDescription}}</h3>
+
+            <p>Temperature: </p>
+            <h3>{{forecast.temperature}}</h3>
+
+            <p>Windspeed: </p>
+            <h3>{{forecast.windSpeed}}</h3>
+          </div>
         </div>
       </form>
-
     </mat-card>
-    
-    <div *ngIf="data">
-      <h1>Data from API:</h1>
-      <pre>{{ data | json }}</pre>
+
+  </div>
+
+  <div class="right">
+    <mat-card-content><h1>Organize your travel!</h1></mat-card-content>
+    <div class = "city-pic" *ngIf="range.get('city')?.value == 'London'">
+      <img src="../assets/img/london.webp">
+    </div>
+    <div class = "city-pic" *ngIf="range.get('city')?.value == 'Tokyo'">
+      <img src="../assets/img/tokyo.webp">
+    </div>
+    <div class = "city-pic" *ngIf="range.get('city')?.value == 'New York'">
+      <img src="../assets/img/newyork.webp">
+    </div>
+    <div class = "city-pic" *ngIf="range.get('city')?.value == 'Paris'">
+      <img src="../assets/img/paris.webp">
+    </div>
+    <div class = "city-pic" *ngIf="range.get('city')?.value == 'Sydney'">
+      <img src="../assets/img/sydney.webp">
     </div>
 
+    <div *ngIf="cityData" >
+      <div class="data-api">
+        <h3>{{cityData.name}}, {{cityData.country}}</h3>
+        <p>{{cityData.description}}</p>
+      </div>
+    </div>
+  </div>
   </div>
 </main>

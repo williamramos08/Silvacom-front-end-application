@@ -15,7 +15,12 @@ interface City {
 })
 export class AppComponent implements OnInit {
   title = 'silvacom-frontend';
-  data: any;
+  cityData: any;
+  weatherData : any;
+  forecastData : any;
+  maxDate =  new Date();
+  daysValue = 0;
+  cityValue = '';
 
   selectedValue: string | undefined;
   range: FormGroup;
@@ -32,29 +37,78 @@ export class AppComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private dataService: DataService, private datePipe: DatePipe) {
     this.formattedTodayDate = this.datePipe.transform(this.todayDate, 'yyyy-MM-dd') || '';
+    this.maxDate.setDate(this.maxDate.getDate() + 3);
     
     this.range = this.fb.group({
       city: [''],
       start: [this.todayDate],
       end: ['']
     });
+
+    this.range.get('city')!.valueChanges.subscribe(cityValue => {
+      if (cityValue) {
+        this.cityValue = cityValue;
+        this.getCityData(cityValue);
+        this.getWeatherData(cityValue);
+      }
+    });
+
+    this.range.get('end')?.valueChanges.subscribe((endDate: Date) => {
+      if (endDate) {
+        // Ensure the selected end date does not exceed the max date
+        if (endDate > this.maxDate) {
+          this.range.get('end')?.setValue(this.maxDate); // Set end date to max date if it exceeds it
+        }
+      }
+    });
+
+    this.range.valueChanges.subscribe(() => {
+      // Calculate the number of days between the start and end dates
+      const startDate = this.range.get('start')?.value;
+      const endDate = this.range.get('end')?.value;
+      if (startDate && endDate) {
+        const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
+        this.daysValue = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Calculate the difference in days
+        this.getWeatherForecast(this.daysValue+1);
+      }
+    });
   }  
 
   ngOnInit() {
-    this.dataService.getData().subscribe(
+  }
+  
+
+  getCityData(cityValue: string) {
+    this.dataService.getCity(cityValue).subscribe(
       (response) => {
-        this.data = response;
+        this.cityData = response;
       },
       (error) => {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching city data:', error);
+      }
+    );
+  }
+ 
+  getWeatherData(cityValue: string) {
+    this.dataService.getWeatherByCity(cityValue).subscribe(
+      (response) => {
+        this.weatherData = response;
+      },
+      (error) => {
+        console.error('Error fetching city data:', error);
       }
     );
   }
 
-  filterFn = (date: Date | null): boolean => {
-    // Allow selection of today's date or future dates
-    return !date || date >= this.todayDate;
+  getWeatherForecast(daysValue: number) {
+    console.log(this.cityValue+" + "+this.daysValue);
+    this.dataService.getWeatherForecastByCityAndDays(this.cityValue, daysValue).subscribe(
+      (response) => {
+        this.forecastData = response;
+      },
+      (error) => {
+        console.error('Error fetching city data:', error);
+      }
+    );
   }
-  
- 
 }
