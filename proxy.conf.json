@@ -1,0 +1,8 @@
+{
+    "/api": {
+      "target": "https://silvacom-backend-application.nn.r.appspot.com",
+      "secure": false,
+      "changeOrigin": true
+    }
+  }
+  

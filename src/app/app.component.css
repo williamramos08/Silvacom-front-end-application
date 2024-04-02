@@ -1,0 +1,5 @@
+.disabled-date {
+    background-color: #f0f0f0 !important; /* Change to your desired disabled date color */
+    color: #ccc !important; /* Change to your desired text color for disabled dates */
+  }
+  
